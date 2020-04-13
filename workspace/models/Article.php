@@ -17,21 +17,7 @@ class Article extends Model
     {
         $model = self::saveArticleInfo($model, $data);
 
-        $ac = new ArticleCategory();
-        $ac->article_id = $model->id;
-        $ac->category_id = $data->category_id;
-        $ac->save();
-    }
-
-    public static function editLocalArticle($model, $data)
-    {
-        $model = self::saveArticleInfo($model, $data);
-
-        $existing = ArticleCategory::where('article_id', $model->id)->get();
-        foreach ($existing as $item) {
-            $item->category_id = $data->category_id;
-            $item->save();
-        }
+        self::saveCategoriesInfo($model, $data);
     }
 
     public static function saveData($model, $data)
@@ -42,6 +28,13 @@ class Article extends Model
         $model->image = '<img src="/workspace/modules/themes/themes/the-news-reporter/assets/images/'. $data->image .'" />';
         $model->parent_id = $data->parent_id;
         $model->language_id = self::getItemId(Language::where('name', $data->language)->first(), new Language(), 'name',  $data->language);
+
+        $settings = Settings::where('key', 'title')->first();
+
+        $model->title = ((isset($data->title) && $data->title) ? $data->title : $data->name . ' | ' . $settings->value);
+        $model->description = $data->description;
+        $model->keywords = $data->keywords;
+        $model->url = ((isset($data->url) && $data->url) ? $data->url : $_SERVER['SERVER_NAME'].'/read/'.$model->id);
         $model->save();
 
         $existing_categories = array();
@@ -86,6 +79,35 @@ class Article extends Model
         $model->save();
 
         return $model;
+    }
+
+    public static function saveCategoriesInfo($model, $data)
+    {
+        $existing_categories = array();
+        $existing = ArticleCategory::where('article_id', $model->id)->get();
+        if($existing)
+            foreach ($existing as $item)
+                $existing_categories[$item->category_id] = $item->category_id;
+
+        foreach ($data->category_id as $value) {
+
+            if(in_array($value, $existing_categories))
+                unset($existing_categories[$value]);
+            else {
+                $ac = new ArticleCategory();
+                $ac->article_id = $model->id;
+                $ac->category_id = $value;
+                $ac->save();
+                unset($existing_categories[$value]);
+            }
+        }
+
+        if(isset($existing_categories) && $existing_categories) {
+            foreach ($existing_categories as $existing_category) {
+                $ec = ArticleCategory::where('article_id', $model->id)->where('category_id', $existing_category)->first();
+                ArticleCategory::destroy($ec->id);
+            }
+        }
     }
 
     public static function getItemId($existing, $new, $field, $item)

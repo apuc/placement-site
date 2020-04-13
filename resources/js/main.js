@@ -1,7 +1,7 @@
-$('select').selectpicker();
+$('#select').selectpicker();
 
 $( "#category_ids" ).change(function(e) {
-    console.log($('#category_ids').val());
+    //console.log($('#category_ids').val());
 });
 
 jQuery(document).ready(function ($) {

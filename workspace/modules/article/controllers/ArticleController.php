@@ -9,6 +9,7 @@ use workspace\models\Article;
 use workspace\models\ArticleCategory;
 use workspace\models\Category;
 use workspace\models\Language;
+use workspace\models\Settings;
 
 class ArticleController extends Controller
 {
@@ -37,6 +38,20 @@ class ArticleController extends Controller
                     'value' => function($model) {
                         $language = Language::where('id', $model->language_id)->first();
                         return $language->name;
+                    }
+                ],
+                'category' => [
+                    'label' => 'Категории',
+                    'value' => function($model) {
+                        $ac = ArticleCategory::where('article_id', $model->id)->get();
+                        $category = '';
+                        foreach ($ac as $item) {
+                            $c = Category::where('id', $item->category_id)->first();
+                            $category .= $c->category . ', ';
+                        }
+                        $category = substr($category, 0, -2);
+
+                        return $category;
                     }
                 ],
                 'title' => 'Title',
@@ -82,7 +97,7 @@ class ArticleController extends Controller
                     }
                 ],
                 'category' => [
-                    'label' => 'Категория',
+                    'label' => 'Категории',
                     'value' => function($model) {
                         $ac = ArticleCategory::where('article_id', $model->id)->get();
                         $category = '';
@@ -110,35 +125,52 @@ class ArticleController extends Controller
     {
         if(isset($_POST['name']) && isset($_POST['text'])) {
             $article = new Article();
-            $data = new \workspace\classes\Article($article->id, $_POST['name'], $_POST['text'], $_POST['language_id'],
-                '', $_POST['image'], 0, $_POST['category_id'], $_POST['title'], $_POST['description'],
-                $_POST['keywords'], $_POST['url']);
+            $article->name = '';
+            $article->text = '';
+            $article->image_name = '';
+            $article->image = '';
+            $article->parent_id = 0;
+            $article->language_id = 0;
+            $article->save();
 
-            Article::saveLocalArticle($article, $data);
+            $settings = Settings::where('key', 'title')->first();
+
+            Article::saveLocalArticle($article, $this->formData($article, $settings));
+
             $this->redirect('article');
         } else {
             $languages = $this->getArray(Language::all(), 'name');
             $categories = $this->getArray(Category::all(), 'category');
 
+            $categories_obj = Category::all();
+
+            $select_options = [
+                'id' => 'category_ids',
+                'class' => '',
+                'label' => 'Категории:',
+                'value' => 'category',
+                'value_id' => 'id'
+            ];
+
             return $this->render('article/store.tpl',
-                ['h1' => 'Добавить статью', 'language' => $languages, 'categories' => $categories]);
+                ['h1' => 'Добавить статью', 'language' => $languages, 'categories' => $categories,
+                    'select_options' => $select_options, 'categories_obj' => $categories_obj]);
         }
     }
 
     public function actionEdit($id)
     {
         $model = Article::where('id', $id)->first();
+
+        $selected = array();
         $ac = ArticleCategory::where('article_id', $model->id)->get();
-        foreach ($ac as $item) {
-            $category_id = $item->category_id;
-            break;
-        }
+        foreach ($ac as $value)
+            array_push($selected, $value->category_id);
 
         if(isset($_POST['name']) && isset($_POST['text'])) {
-            $data = new \workspace\classes\Article($model->id, $_POST['name'], $_POST['text'], $_POST['language_id'],
-                '', $_POST['image'], 0, $_POST['category_id'], $_POST['title'], $_POST['description'],
-                $_POST['keywords'], $_POST['url']);
-            Article::editLocalArticle($model, $data);
+            $settings = Settings::where('key', 'title')->first();
+
+            Article::saveLocalArticle($model, $this->formData($model, $settings));
 
             $this->redirect('article');
         } else {
@@ -157,7 +189,7 @@ class ArticleController extends Controller
 
             return $this->render('article/edit.tpl',
                 ['h1' => 'Редактировать: ', 'model' => $model, 'languages' => $languages, 'categories' => $categories,
-                    'category_id' => $category_id, 'select_options' => $select_options, 'categories_obj' => $categories_obj]);
+                    'select_options' => $select_options, 'categories_obj' => $categories_obj, 'selected_categories' => $selected]);
         }
     }
 
@@ -173,5 +205,16 @@ class ArticleController extends Controller
             $array[$value->id] = $value->$field;
 
         return $array;
+    }
+
+    public function formData($model, $settings)
+    {
+        return new \workspace\classes\Article($model->id,
+            $_POST['name'], $_POST['text'], $_POST['language_id'],
+            '', $_POST['image'], 0, $_POST['category_ids'],
+            ((isset($_POST['title']) && $_POST['title']) ? $_POST['title'] : $_POST['name'] . ' | ' . $settings->value),
+            ((isset($_POST['description']) && $_POST['description']) ? $_POST['description'] : ''),
+            ((isset($_POST['keywords']) && $_POST['keywords']) ? $_POST['keywords'] : ''),
+            ((isset($_POST['url']) && $_POST['url']) ? $_POST['url'] : $_SERVER['SERVER_NAME'].'/read/'.$model->id));
     }
 }
