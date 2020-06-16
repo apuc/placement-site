@@ -7,3 +7,15 @@ App::$collector->filter('auth', function(){
         die();
     }
 });
+
+App::$collector->filter('some', function ($response){
+    //echo $param;
+});
+
+App::$collector->filter('next', function (){
+    //echo 'next';
+});
+
+App::$collector->filter('main_group', function ($response){
+    //echo $param;
+});
