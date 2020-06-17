@@ -13,6 +13,7 @@ use core\RequestSearch;
  * @property string $name
  * @property string $text
  * @property string $title
+ * @property string $lang
  * @property string $description
  * @property string $keywords
  * @property string $url
@@ -22,7 +23,7 @@ class ArticleSearchRequest extends RequestSearch
 {
     public $name;
     public $text;
-    public $language;
+    public $lang;
     public $title;
     public $description;
     public $keywords;

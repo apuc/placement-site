@@ -2,7 +2,7 @@
 {*<div class="h1">{$h1}</div>*}
 
 <div class="container">
-    <form class="form-horizontal" name="create_form" id="create_form" method="post" action="/users/create">
+    <form class="form-horizontal" name="create_form" id="create_form" method="post" action="/admin/users/create">
         <div class="form-group">
             <label for="username">Логин:</label>
             <input type="text" name="username" id="username" class="form-control" required="required" />

@@ -4,7 +4,7 @@
 <div class="h1">{$h1} {$model->category}</div>
 
 <div class="container">
-    <form class="form-horizontal" name="edit_form" id="edit_form" method="post" action="/categories/update/{$model->id}">
+    <form class="form-horizontal" name="edit_form" id="edit_form" method="post" action="/admin/categories/update/{$model->id}">
         <div class="form-group">
             <label for="category">Категория:</label>
             <input type="text" name="category" id="category" class="form-control" required="required" value="{$model->category}" />

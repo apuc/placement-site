@@ -15,6 +15,14 @@ class Article extends Model
     public $fillable = ['id', 'name', 'text' , 'language_id', 'image_name', 'image', 'parent_id', 'title', 'description', 'keywords', 'url'];
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function language()
+    {
+        return $this->belongsTo('workspace\models\Language');
+    }
+
+    /**
      * @param ArticleSearchRequest $request
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
@@ -28,14 +36,20 @@ class Article extends Model
         if ($request->text)
             $query->where('text', 'LIKE', "%$request->text%");
 
-        if ($request->language) {
-            $lang = Language::where('name', $request->language)->first();
-
-            if($lang)
-                $query->where('language_id', 'LIKE', "$lang->id");
-            else
-                $query->where('language_id', 'LIKE', "0");
+        if ($request->lang) {
+            $query->whereHas('language', function ($q) use ($request){
+                $q->where('name', 'LIKE', "%$request->lang%");
+            });
         }
+
+//        if ($request->language) {
+//            $lang = Language::where('name', $request->language)->first();
+//
+//            if($lang)
+//                $query->where('language_id', 'LIKE', "$lang->id");
+//            else
+//                $query->where('language_id', 'LIKE', "0");
+//        }
 
         if ($request->title)
             $query->where('title', 'LIKE', "%$request->title%");

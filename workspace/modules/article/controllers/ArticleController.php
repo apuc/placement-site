@@ -35,11 +35,11 @@ class ArticleController extends Controller
             'fields' => [
                 'name' => 'Заголовок',
                 'text' => 'Статья',
-                'language' => [
+                'lang' => [
                     'label' => 'Язык',
                     'value' => function($model) {
-                        $language = Language::where('id', $model->language_id)->first();
-                        return $language->name;
+                        //$language = Language::where('id', $model->language_id)->first();
+                        return $model->language->name;
                     },
                 ],
                 'category' => [
@@ -94,9 +94,7 @@ class ArticleController extends Controller
                 'language' => [
                     'label' => 'Язык',
                     'value' => function($model) {
-                        $loc_model = Language::where('id', $model->language_id)->first();
-
-                        return $loc_model->name;
+                        return $model->language->name;
                     }
                 ],
                 'category' => [
@@ -140,7 +138,7 @@ class ArticleController extends Controller
 
             Article::saveLocalArticle($article, $this->formData($article, $settings));
 
-            $this->redirect('article');
+            $this->redirect('admin/article');
         } else {
             $languages = $this->getArray(Language::all(), 'name');
             $categories = $this->getArray(Category::all(), 'category');
@@ -175,7 +173,7 @@ class ArticleController extends Controller
 
             Article::saveLocalArticle($model, $this->formData($model, $settings));
 
-            $this->redirect('article');
+            $this->redirect('admin/article');
         } else {
             $languages = $this->getArray(Language::all(), 'name');
             $categories = $this->getArray(Category::all(), 'category');
