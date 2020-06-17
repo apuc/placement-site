@@ -10,6 +10,7 @@ use workspace\models\ArticleCategory;
 use workspace\models\Category;
 use workspace\models\Language;
 use workspace\models\Settings;
+use workspace\modules\article\requests\ArticleSearchRequest;
 
 class ArticleController extends Controller
 {
@@ -26,7 +27,8 @@ class ArticleController extends Controller
 
     public function actionIndex()
     {
-        $model = Article::all()->sortByDesc("updated_at");
+        $request = new ArticleSearchRequest();
+        $model = Article::search($request)->sortByDesc("updated_at");
 
         $options = [
             'serial' => '#',
@@ -38,7 +40,7 @@ class ArticleController extends Controller
                     'value' => function($model) {
                         $language = Language::where('id', $model->language_id)->first();
                         return $language->name;
-                    }
+                    },
                 ],
                 'category' => [
                     'label' => 'Категории',
@@ -52,7 +54,8 @@ class ArticleController extends Controller
                         $category = substr($category, 0, -2);
 
                         return $category;
-                    }
+                    },
+                    'showFilter' => false,
                 ],
                 'title' => 'Title',
                 'description' => 'Description',

@@ -10,6 +10,16 @@ namespace core;
 
 class GridView extends Widget
 {
+    /*
+     * available params for $options:
+     * 'serial' => '#',
+     * 'actions' => 'view, edit, delete',
+     * 'table_class' => 'class_1 class_2 ... class_m',
+     * 'thead_class' => 'class_1 class_2 ... class_m',
+     * 'baseUri' => 'url',
+     * 'fields' => ['attr_1', ..., 'attr_m']
+     */
+
     public $actionsBtn = [
         'view' => ['class' => 'custom-link', 'id' => '', 'icon' => '<i class="nav-icon fas fa-eye"></i>',
             'url' => '/{id}'],
@@ -27,13 +37,6 @@ class GridView extends Widget
 
     /**
      * @var $pagination Pagination
-     * available params for $options:
-     * 'serial' => '#',
-     * 'actions' => 'view, edit, delete',
-     * 'table_class' => 'class_1 class_2 ... class_m',
-     * 'thead_class' => 'class_1 class_2 ... class_m',
-     * 'baseUri' => 'url',
-     * 'fields' => ['attr_1', ..., 'attr_m']
      */
     protected $pagination;
 

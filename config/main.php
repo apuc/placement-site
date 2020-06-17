@@ -7,7 +7,7 @@
  */
 
 return [
-    'app_name' => 'LovedShop',
+    'app_name' => 'The News Reporter',
     'adminLeftMenu' => [
     ],
     'component_manager' => [

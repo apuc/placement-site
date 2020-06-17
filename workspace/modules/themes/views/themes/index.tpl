@@ -1,4 +1,4 @@
-<div class="h1">Themes Module</div>
+<div class="h1">{$h1}</div>
 
 <h5>Текущая тема: <span class="blue-text">{$theme->value}</span></h5>
 {*<a href="/themes/create" class="btn btn-dark">Изменить текущую тему</a>*}

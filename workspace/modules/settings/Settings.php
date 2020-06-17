@@ -13,7 +13,7 @@ class Settings
             [
                 'title' => 'Настройки',
                 'url' => '/admin/settings',
-                'icon' => '<i class="fas fa-cogs"></i>',
+                'icon' => '<i class="nav-icon fa fa-cog"></i>',
             ],
         ];
 

@@ -11,9 +11,9 @@ class Themes
     {
         $config['adminLeftMenu'] = [
             [
-                'title' => 'Themes',
-                'url' => '/themes',
-                'icon' => '<i class="nav-icon fas fa-copy"></i>',
+                'title' => 'Темы',
+                'url' => '/admin/themes',
+                'icon' => '<i class="nav-icon fa fa-paint-brush"></i>',
             ],
         ];
 

@@ -20,10 +20,10 @@ App::$collector->any('sign-up', ['workspace\controllers\MainController', 'action
 App::$collector->any('sign-in', ['workspace\controllers\MainController', 'actionSignIn']);
 App::$collector->any('logout', ['workspace\controllers\MainController', 'actionLogout']);
 App::$collector->any('modules', ['workspace\controllers\MainController', 'actionModules']);
-App::$collector->any('module-download', ['workspace\controllers\MainController', 'actionModuleDownload']);
+App::$collector->any('admin/module-download', ['workspace\controllers\MainController', 'actionModuleDownload']);
 App::$collector->any('module-set-active', ['workspace\controllers\MainController', 'actionSetActive']);
 App::$collector->any('module-set-inactive', ['workspace\controllers\MainController', 'actionSetInactive']);
-App::$collector->any('module-delete', ['workspace\controllers\MainController', 'actionModuleDelete']);
+App::$collector->any('admin/module-delete', ['workspace\controllers\MainController', 'actionModuleDelete']);
 App::$collector->any('language', ['workspace\controllers\MainController', 'actionLanguage']);
 
 App::$collector->post('/set-theme', ['workspace\controllers\ApiController', 'actionSetTheme']);

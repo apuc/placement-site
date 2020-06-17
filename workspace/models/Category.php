@@ -21,9 +21,8 @@ class Category  extends Model
     {
         $query = self::query();
 
-        if ($request->category) {
+        if ($request->category)
             $query->where('category', 'LIKE', "%$request->category%");
-        }
 
         return $query->get();
     }

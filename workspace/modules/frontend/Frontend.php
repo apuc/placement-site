@@ -9,14 +9,14 @@ class Frontend
 {
     public static function run()
     {
-        $config['adminLeftMenu'] = [
-            [
-                'title' => 'Frontend',
-                'url' => '/',
-                'icon' => '<i class="nav-icon fas fa-copy"></i>',
-            ],
-        ];
+//        $config['adminLeftMenu'] = [
+//            [
+//                'title' => 'Frontend',
+//                'url' => '/',
+//                'icon' => '<i class="nav-icon fa fa-desktop"></i>',
+//            ],
+//        ];
 
-        App::mergeConfig($config);
+//        App::mergeConfig($config);
     }
 }

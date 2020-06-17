@@ -5,6 +5,7 @@ use core\App;
 use core\Controller;
 use core\Debug;
 use workspace\models\User;
+use workspace\modules\users\requests\UsersSearchRequest;
 
 class UsersController  extends Controller
 {
@@ -19,7 +20,8 @@ class UsersController  extends Controller
 
     public function actionIndex()
     {
-        $model = User::all();
+        $request = new UsersSearchRequest();
+        $model = User::search($request);
 
         $options = [
             'serial' => '#',
@@ -34,7 +36,7 @@ class UsersController  extends Controller
             ],
         ];
         return $this->render('users/index.tpl',
-            ['model' => $model, 'options' => $options]);
+            ['model' => $model, 'options' => $options, 'h1' => 'Пользователи']);
     }
 
     public function actionView($id)
