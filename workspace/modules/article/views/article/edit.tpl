@@ -51,7 +51,7 @@
             <input type="text" name="url" id="url" class="form-control" value="{$model->url}" />
         </div>
         <div class="form-group">
-            <input type="submit" name="submit" id="submit_button" class="btn btn-default" value="Сохранить">
+            <input type="submit" name="submit" id="submit_button" class="btn btn-dark" value="Сохранить">
         </div>
     </form>
 </div>

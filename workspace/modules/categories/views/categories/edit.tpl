@@ -10,7 +10,7 @@
             <input type="text" name="category" id="category" class="form-control" required="required" value="{$model->category}" />
         </div>
         <div class="form-group">
-            <input type="submit" name="submit" id="submit_button" class="btn btn-default" value="Submit">
+            <input type="submit" name="submit" id="submit_button" class="btn btn-dark" value="Submit">
         </div>
     </form>
 </div>
