@@ -50,7 +50,8 @@ class ThemesController extends Controller
                             return $button->button('theme-set-active', 'Сделать активной темой', $model->name, $model->name, 'toggle-off');
                         else
                             return $button->button('module-download', 'Скачать', $model->name, $model->name, 'download');
-                    }
+                    },
+                    'showFilter' => false,
                 ],
                 'delete' => [
                     'label' => '',
@@ -62,18 +63,38 @@ class ThemesController extends Controller
                             return $button->button('fixed-width module-delete', 'Удалить', $model->name, $model->name, 'trash');
                         else
                             return '<div class="fixed-width"></div>';
-                    }
+                    },
+                    'showFilter' => false,
                 ],
                 'status' => [
                     'label' => 'Статус',
                     'value' => function($model) {
                         $mod = new Mod();
                         return '<div class="fixed-width">' . $mod->getModInfo($model->name)['status'] . '</div>';
-                    }
+                    },
+                    'showFilter' => false,
                 ],
-                'name' => 'Название',
-                'description' => 'Описание',
-                'version' => 'Версия',
+                'name' => [
+                    'label' => 'Название',
+                    'value' => function($model) {
+                        return $model->name;
+                    },
+                    'showFilter' => false,
+                ],
+                'description' => [
+                    'label' => 'Описание',
+                    'value' => function($model) {
+                        return $model->description;
+                    },
+                    'showFilter' => false,
+                ],
+                'version' => [
+                    'label' => 'Версия',
+                    'value' => function($model) {
+                        return $model->version;
+                    },
+                    'showFilter' => false,
+                ],
                 'img' => [
                     'label' => "",
                     'value' => function($model) {
@@ -87,14 +108,15 @@ class ThemesController extends Controller
 
                             return '<img class="img" src="'.$src.'" />';
                         }
-                    }
+                    },
+                    'showFilter' => false,
                 ]
             ],
             'baseUri' => 'themes'
         ];
 
         return $this->render('themes/index.tpl',
-            ['h1' => 'Index', 'theme' => $theme, 'model' => $model, 'options' => $options]);
+            ['h1' => 'Темы', 'theme' => $theme, 'model' => $model, 'options' => $options]);
     }
 
     public function actionSetActiveTheme()

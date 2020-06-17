@@ -6,12 +6,51 @@ namespace workspace\models;
 
 use core\Debug;
 use Illuminate\Database\Eloquent\Model;
+use workspace\modules\article\requests\ArticleSearchRequest;
 
 class Article extends Model
 {
     protected $table = "article";
 
     public $fillable = ['id', 'name', 'text' , 'language_id', 'image_name', 'image', 'parent_id', 'title', 'description', 'keywords', 'url'];
+
+    /**
+     * @param ArticleSearchRequest $request
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public static function search(ArticleSearchRequest $request)
+    {
+        $query = self::query();
+
+        if ($request->name)
+            $query->where('name', 'LIKE', "%$request->name%");
+
+        if ($request->text)
+            $query->where('text', 'LIKE', "%$request->text%");
+
+        if ($request->language) {
+            $lang = Language::where('name', $request->language)->first();
+
+            if($lang)
+                $query->where('language_id', 'LIKE', "$lang->id");
+            else
+                $query->where('language_id', 'LIKE', "0");
+        }
+
+        if ($request->title)
+            $query->where('title', 'LIKE', "%$request->title%");
+
+        if ($request->description)
+            $query->where('description', 'LIKE', "%$request->description%");
+
+        if ($request->keywords)
+            $query->where('keywords', 'LIKE', "%$request->keywords%");
+
+        if ($request->url)
+            $query->where('url', 'LIKE', "%$request->url%");
+
+        return $query->get();
+    }
 
     public static function saveLocalArticle($model, $data)
     {

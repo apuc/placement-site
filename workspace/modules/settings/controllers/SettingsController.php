@@ -6,7 +6,10 @@ namespace workspace\modules\settings\controllers;
 
 use core\App;
 use core\Controller;
+use workspace\models\Article;
 use workspace\models\Settings;
+use workspace\modules\article\requests\ArticleSearchRequest;
+use workspace\modules\settings\requests\SettingsSearchRequest;
 
 class SettingsController extends Controller
 {
@@ -24,7 +27,8 @@ class SettingsController extends Controller
 
     public function actionIndex()
     {
-        $model = Settings::all();
+        $request = new SettingsSearchRequest();
+        $model = Settings::search($request);
 
         $options = [
             'serial' => '#',

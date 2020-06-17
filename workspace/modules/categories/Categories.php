@@ -11,9 +11,9 @@ class Categories
     {
         $config['adminLeftMenu'] = [
             [
-                'title' => 'Categories',
-                'url' => '/categories',
-                'icon' => '<i class="nav-icon fas fa-copy"></i>',
+                'title' => 'Категории',
+                'url' => '/admin/categories',
+                'icon' => '<i class="nav-icon fa fa-tags"></i>',
             ],
         ];
 
